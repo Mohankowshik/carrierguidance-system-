@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 text-center mt-5">
+        <h1>Welcome to Career Guidance System</h1>
+        <p class="lead">Discover your future career path based on your academic performance and personality interests.</p>
+        <hr>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title">Career by Marks</h5>
+                <p class="card-text">Enter your subject marks to get a career recommendation based on your academic strengths.</p>
+                <a href="/career" class="btn btn-primary">Start Marks Test</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title">Career by Interest</h5>
+                <p class="card-text">Take the Holland Code personality test to see what careers match your interests and traits.</p>
+                <a href="/personality" class="btn btn-success">Start Interest Test</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title">Combined Analysis</h5>
+                <p class="card-text">Get a comprehensive analysis by combining both your marks and personality results.</p>
+                <a href="/combined" class="btn btn-warning">Start Combined Test</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

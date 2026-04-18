@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h2 class="text-center text-primary">Comprehensive Career Analysis Results</h2>
+        <p class="text-center text-muted">A combined view of your academic performance and interest-based recommendations.</p>
+    </div>
+
+    <!-- Academic Recommendations -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow border-primary">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="bi bi-journal-check"></i> Academic Recommendations</h4>
+            </div>
+            <div class="card-body">
+                <p class="small text-muted mb-4">Based on your subject marks and academic history.</p>
+                <div class="list-group mb-4">
+                    {% for career, prob in career_results %}
+                    <div class="list-group-item list-group-item-action border-0 bg-light mb-2 rounded">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <h5 class="mb-1 text-primary">{{ career }}</h5>
+                            <span class="badge bg-primary rounded-pill">{{ prob }}%</span>
+                        </div>
+                        <div class="progress mt-2" style="height: 6px;">
+                            <div class="progress-bar" role="progressbar" style="width: {{ prob }}%;"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if career_chart %}
+                <div class="text-center mt-3">
+                    <img src="data:image/png;base64,{{ career_chart }}" class="img-fluid rounded shadow-sm" alt="Academic Career Distribution">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Interest & Personality Recommendations -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow border-success">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="bi bi-person-check"></i> Interest-Based Recommendations</h4>
+            </div>
+            <div class="card-body">
+                <p class="small text-muted mb-4">Based 65% on your technical interests and 35% on your Holland personality type ({{ personality_results.personality }}).</p>
+                <div class="list-group mb-4">
+                    {% for career, score in personality_results.recommendations %}
+                    <div class="list-group-item list-group-item-action border-0 bg-light mb-2 rounded">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <h5 class="mb-1 text-success">{{ career }}</h5>
+                            <span class="badge bg-success rounded-pill">{{ score }}%</span>
+                        </div>
+                        <div class="progress mt-2" style="height: 6px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ score }}%;"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if personality_results.chart %}
+                <div class="text-center mt-3">
+                    <img src="data:image/png;base64,{{ personality_results.chart }}" class="img-fluid rounded shadow-sm" alt="Interest Career Distribution">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 text-center mt-4 mb-5">
+        <a href="/combined" class="btn btn-warning btn-lg px-5 shadow">Retake Combined Analysis</a>
+        <a href="/" class="btn btn-outline-secondary btn-lg px-5 ms-3">Back to Home</a>
+    </div>
+</div>
+{% endblock %}

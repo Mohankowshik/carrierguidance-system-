@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card p-4">
+            <h2 class="text-center mb-4">Holland Personality Test (Interests)</h2>
+            <p class="text-center text-muted">Rate each statement based on how much you agree (1: Strongly Disagree, 5: Strongly Agree)</p>
+            <form id="personalityForm">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Technical Interests</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">Select your technical interests (Choose all that apply):</p>
+                        <div class="row">
+                            {% for interest in technical_interests %}
+                            <div class="col-md-4 mb-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="technical_interests" value="{{ interest }}" id="interest_{{ loop.index }}">
+                                    <label class="form-check-label" for="interest_{{ loop.index }}">
+                                        {{ interest }}
+                                    </label>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion" id="questionsAccordion">
+                    {% for ptype, qs in questions.items() %}
+                    <div class="accordion-item mb-3">
+                        <h2 class="accordion-header" id="heading{{ ptype }}">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ ptype }}" aria-expanded="true">
+                                Category: {{ ptype }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ ptype }}" class="accordion-collapse collapse show" aria-labelledby="heading{{ ptype }}">
+                            <div class="accordion-body">
+                                {% for q in qs %}
+                                <div class="mb-3 border-bottom pb-2">
+                                    <p class="mb-2">{{ q }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span>Disagree</span>
+                                        <div class="form-check form-check-inline mx-2">
+                                            <input class="form-check-input" type="radio" name="{{ ptype }}_{{ loop.index0 }}" id="{{ ptype }}_{{ loop.index0 }}_1" value="1" required>
+                                            <label class="form-check-label" for="{{ ptype }}_{{ loop.index0 }}_1">1</label>
+                                        </div>
+                                        <div class="form-check form-check-inline mx-2">
+                                            <input class="form-check-input" type="radio" name="{{ ptype }}_{{ loop.index0 }}" id="{{ ptype }}_{{ loop.index0 }}_2" value="2">
+                                            <label class="form-check-label" for="{{ ptype }}_{{ loop.index0 }}_2">2</label>
+                                        </div>
+                                        <div class="form-check form-check-inline mx-2">
+                                            <input class="form-check-input" type="radio" name="{{ ptype }}_{{ loop.index0 }}" id="{{ ptype }}_{{ loop.index0 }}_3" value="3" checked>
+                                            <label class="form-check-label" for="{{ ptype }}_{{ loop.index0 }}_3">3</label>
+                                        </div>
+                                        <div class="form-check form-check-inline mx-2">
+                                            <input class="form-check-input" type="radio" name="{{ ptype }}_{{ loop.index0 }}" id="{{ ptype }}_{{ loop.index0 }}_4" value="4">
+                                            <label class="form-check-label" for="{{ ptype }}_{{ loop.index0 }}_4">4</label>
+                                        </div>
+                                        <div class="form-check form-check-inline mx-2">
+                                            <input class="form-check-input" type="radio" name="{{ ptype }}_{{ loop.index0 }}" id="{{ ptype }}_{{ loop.index0 }}_5" value="5">
+                                            <label class="form-check-label" for="{{ ptype }}_{{ loop.index0 }}_5">5</label>
+                                        </div>
+                                        <span>Agree</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg px-5">Submit Test</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Result Section (hidden by default) -->
+        <div id="personalityResult" class="card p-4 mt-5" style="display: none;">
+            <h2 class="text-center mb-4">Your Personality Profile</h2>
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center">
+                    <img id="personalityChart" class="img-fluid rounded shadow" alt="Personality Chart">
+                </div>
+                <div class="col-md-6">
+                    <h3 class="text-primary">Dominant Type: <span id="personalityName"></span></h3>
+                    <p class="lead" id="personalityDesc"></p>
+                    <hr>
+                    <h5>Recommended Career Paths:</h5>
+                    <ul id="personalityCareers" class="list-group list-group-flush mb-3"></ul>
+                    <a href="/personality" class="btn btn-outline-secondary">Take Test Again</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('personalityForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = {};
+        const techInterests = [];
+        
+        formData.forEach((value, key) => {
+            if (key === 'technical_interests') {
+                techInterests.push(value);
+            } else {
+                data[key] = value;
+            }
+        });
+        data['technical_interests'] = techInterests;
+
+        fetch('/personality', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.error) {
+                alert('Error: ' + result.error);
+                return;
+            }
+            document.getElementById('personalityForm').style.display = 'none';
+            document.getElementById('personalityResult').style.display = 'block';
+            document.getElementById('personalityName').innerText = result.personality;
+            document.getElementById('personalityDesc').innerText = result.description;
+            document.getElementById('personalityChart').src = 'data:image/png;base64,' + result.chart;
+
+            const careersList = document.getElementById('personalityCareers');
+            careersList.innerHTML = '';
+            result.recommendations.forEach(rec => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                li.innerHTML = `<span>${rec[0]}</span> <span class="badge bg-primary rounded-pill">${rec[1]}%</span>`;
+                careersList.appendChild(li);
+            });
+            window.scrollTo({ top: document.getElementById('personalityResult').offsetTop, behavior: 'smooth' });
+        });
+    });
+</script>
+
+{% endblock %}
