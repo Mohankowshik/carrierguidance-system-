@@ -321,8 +321,12 @@ def combined():
 
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     # For local development
     app.run(debug=True)
 
 # For Vercel, the app object is imported directly.
 # Ensure 'app' is the Flask instance.
+=======
+    app.run(debug=True)
+>>>>>>> 60c17094c30019bfa7614b3031154f5fe540be04

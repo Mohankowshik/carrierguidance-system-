@@ -4,4 +4,7 @@ numpy
 matplotlib
 scikit-learn
 pandas
+<<<<<<< HEAD
 gunicorn
+=======
+>>>>>>> 60c17094c30019bfa7614b3031154f5fe540be04
