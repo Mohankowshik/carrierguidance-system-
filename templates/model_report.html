@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .hero-card {
+        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+        color: white;
+        border-radius: 14px;
+    }
+    .hero-card h2 { font-weight: 700; }
+    .stat-card {
+        border-radius: 12px;
+        border-left: 4px solid #2563eb;
+        background: white;
+    }
+    .stat-card.green { border-left-color: #059669; }
+    .stat-card.amber { border-left-color: #d97706; }
+    .stat-card.pink  { border-left-color: #db2777; }
+    .stat-num { font-size: 28px; font-weight: 800; color: #111827; line-height: 1.1; }
+    .stat-label { color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .section-title {
+        font-weight: 700;
+        color: #111827;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 8px;
+        margin-bottom: 18px;
+    }
+    .pkl-badge {
+        display: inline-block;
+        background: #fef3c7;
+        color: #92400e;
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-family: monospace;
+        font-size: 12px;
+        font-weight: 700;
+        border: 1px solid #fcd34d;
+    }
+    .table th { background: #f3f4f6; font-size: 13px; color: #374151; }
+    .table td { font-size: 13px; vertical-align: middle; }
+    .chart-img {
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        background: white;
+    }
+    .file-card {
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 18px;
+        background: #fafafa;
+    }
+    .file-card.model { border-color: #93c5fd; background: #eff6ff; }
+    .file-card.scaler { border-color: #86efac; background: #f0fdf4; }
+    .kbd { background: #e5e7eb; padding: 2px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; color: #111827; }
+    .code-block {
+        background: #1f2937;
+        color: #e5e7eb;
+        padding: 14px 18px;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 12.5px;
+        line-height: 1.55;
+        overflow-x: auto;
+    }
+    .code-block .comment { color: #9ca3af; }
+    .code-block .str { color: #6ee7b7; }
+    .code-block .kw { color: #c4b5fd; font-weight: 600; }
+</style>
+
+<div class="hero-card p-4 p-md-5 mb-4">
+    <h2 class="mb-2">📦 Model Files — Technical Documentation</h2>
+    <p class="mb-0 opacity-90">Presenting <span class="pkl-badge">model.pkl</span> &nbsp; and &nbsp; <span class="pkl-badge">scaler.pkl</span> — the two serialized artifacts powering the Career Recommendation Engine.</p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card stat-card p-3">
+            <div class="stat-label">model.pkl</div>
+            <div class="stat-num">21.94 MB</div>
+            <div class="text-muted small mt-1">RandomForestClassifier · 100 trees</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card green p-3">
+            <div class="stat-label">scaler.pkl</div>
+            <div class="stat-num">1.10 KB</div>
+            <div class="text-muted small mt-1">StandardScaler · 14 features</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card amber p-3">
+            <div class="stat-label">Test Accuracy</div>
+            <div class="stat-num">47.00%</div>
+            <div class="text-muted small mt-1">17-class classification</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card pink p-3">
+            <div class="stat-label">Training Data</div>
+            <div class="stat-num">2,000</div>
+            <div class="text-muted small mt-1">students · 80 / 20 split</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="file-card model">
+            <h5 class="mb-3"><span class="pkl-badge">model.pkl</span> &nbsp; ML Classifier File</h5>
+            <div class="row small mb-3">
+                <div class="col-5 text-muted">Python Type</div>
+                <div class="col-7"><code>sklearn.ensemble.RandomForestClassifier</code></div>
+                <div class="col-5 text-muted">File Size</div>
+                <div class="col-7">21,943,101 bytes (~21.9 MB)</div>
+                <div class="col-5 text-muted">Pickle Protocol</div>
+                <div class="col-7">Generated via <code>pickle.dump(model, f)</code></div>
+                <div class="col-5 text-muted">Loaded In</div>
+                <div class="col-7"><code>app.py</code> line 23</div>
+            </div>
+            <h6 class="mt-3 mb-2">Key Hyperparameters</h6>
+            <table class="table table-sm table-hover mb-0">
+                <tr><th>Parameter</th><th>Value</th><th>Purpose</th></tr>
+                <tr><td><code>n_estimators</code></td><td><b>100</b></td><td>Number of decision trees in the forest</td></tr>
+                <tr><td><code>criterion</code></td><td><b>gini</b></td><td>Impurity measure for splits</td></tr>
+                <tr><td><code>max_features</code></td><td><b>sqrt</b></td><td>Features considered per split</td></tr>
+                <tr><td><code>bootstrap</code></td><td><b>True</b></td><td>Bagging with sample replacement</td></tr>
+                <tr><td><code>random_state</code></td><td><b>42</b></td><td>Reproducibility seed</td></tr>
+            </table>
+            <h6 class="mt-3 mb-2">Model Structure</h6>
+            <ul class="small mb-0">
+                <li>✓ <b>100</b> independent Decision Tree estimators</li>
+                <li>✓ <b>14</b> input features (n_features_in_)</li>
+                <li>✓ <b>17</b> predictable output classes</li>
+                <li>✓ Outputs class probabilities via <code>predict_proba()</code> → top-3 ranked</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="file-card scaler">
+            <h5 class="mb-3"><span class="pkl-badge">scaler.pkl</span> &nbsp; Feature Scaler File</h5>
+            <div class="row small mb-3">
+                <div class="col-5 text-muted">Python Type</div>
+                <div class="col-7"><code>sklearn.preprocessing.StandardScaler</code></div>
+                <div class="col-5 text-muted">File Size</div>
+                <div class="col-7">1,100 bytes (~1.1 KB)</div>
+                <div class="col-5 text-muted">Formula</div>
+                <div class="col-7"><code>z = (x − μ) / σ</code> (z-score)</div>
+                <div class="col-5 text-muted">Loaded In</div>
+                <div class="col-7"><code>app.py</code> line 24</div>
+            </div>
+            <h6 class="mt-3 mb-2">Why We Need It</h6>
+            <p class="small mb-3">RandomForest is <em>scale-invariant</em>, but the scaler is retained so that: (a) feature distributions match training exactly, (b) if we later switch to SVM / KNN / LogReg no retrain is needed, (c) it keeps parity with the training pipeline in <code>train_model.py</code>.</p>
+            <h6 class="mt-3 mb-2">Per-Feature μ and σ stored</h6>
+            <table class="table table-sm table-hover mb-0">
+                <thead><tr><th>#</th><th>Feature</th><th>Mean (μ)</th><th>Std (σ)</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>gender (F=1, M=0)</td><td>0.000</td><td>1.000</td></tr>
+                    <tr><td>2</td><td>part_time_job</td><td>0.158</td><td>0.365</td></tr>
+                    <tr><td>3</td><td>absence_days</td><td>3.666</td><td>2.629</td></tr>
+                    <tr><td>4</td><td>extracurricular_activities</td><td>0.204</td><td>0.403</td></tr>
+                    <tr><td>5</td><td>weekly_self_study_hours</td><td>17.756</td><td>12.127</td></tr>
+                    <tr><td>6</td><td>math_score</td><td>83.452</td><td>13.222</td></tr>
+                    <tr><td>7</td><td>history_score</td><td>80.332</td><td>12.733</td></tr>
+                    <tr><td>8</td><td>physics_score</td><td>81.337</td><td>12.536</td></tr>
+                    <tr><td>9</td><td>chemistry_score</td><td>79.995</td><td>12.775</td></tr>
+                    <tr><td>10</td><td>biology_score</td><td>79.582</td><td>13.719</td></tr>
+                    <tr><td>11</td><td>english_score</td><td>81.278</td><td>12.024</td></tr>
+                    <tr><td>12</td><td>geography_score</td><td>80.888</td><td>11.635</td></tr>
+                    <tr><td>13</td><td>total_score (Σ 7 subjects)</td><td>566.862</td><td>42.285</td></tr>
+                    <tr><td>14</td><td>average_score</td><td>80.980</td><td>6.041</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<h4 class="section-title">🛠️ Model Pipeline — How Data Flows</h4>
+<div class="text-center mb-4">
+    <img class="chart-img" src="/static/model_pipeline.png" alt="Model pipeline diagram">
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-7">
+        <h4 class="section-title">📈 Feature Importance Ranking</h4>
+        <img class="chart-img mb-3" src="/static/feature_importance.png" alt="Feature importance chart">
+        <div class="small text-muted">
+            <b>Top 3 drivers:</b> weekly_self_study_hours (17.0%) → math_score (11.1%) → biology_score (8.5%).
+            <b>Least impactful:</b> gender (~0%), extracurricular (1.4%), part_time_job (1.7%).
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <h4 class="section-title">🎯 Subject Score Distribution</h4>
+        <img class="chart-img mb-3" src="/static/subject_scores.png" alt="Subject scores bar chart">
+        <div class="small text-muted">
+            Mean scores cluster 79–83% across subjects (±12–14%). Math is highest (83.5) while Biology is lowest (79.6).
+            Total score peaks around <b>567 / 700</b>.
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-7">
+        <h4 class="section-title">🥧 Dataset Class Distribution (17 Careers)</h4>
+        <img class="chart-img" src="/static/class_distribution.png" alt="Class distribution pie chart">
+    </div>
+    <div class="col-lg-5">
+        <h4 class="section-title">📚 17 Predictable Career Classes</h4>
+        <div class="row g-2">
+            {% set careers = ['Accountant','Artist','Banker','Business Owner','Construction Engineer','Designer','Doctor','Game Developer','Government Officer','Lawyer','Real Estate Developer','Scientist','Software Engineer','Stock Investor','Teacher','Unknown','Writer'] %}
+            {% for c in careers %}
+            <div class="col-6">
+                <div class="d-flex align-items-center px-2 py-1 rounded" style="background:#f3f4f6;font-size:12.5px;">
+                    <span class="me-2" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2563eb;"></span>
+                    <b>{{ c }}</b>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<h4 class="section-title">🧪 How The 2 Files Are Loaded & Used (Code)</h4>
+<div class="code-block mb-3">
+<span class="comment"># app.py — lines 18-29</span>
+<span class="kw">import</span> pickle, os
+MODEL_PATH  = <span class="str">"Models/model.pkl"</span>
+SCALER_PATH = <span class="str">"Models/scaler.pkl"</span>
+
+<span class="kw">if</span> os.path.exists(MODEL_PATH) <span class="kw">and</span> os.path.exists(SCALER_PATH):
+    model  = pickle.load(<span class="kw">open</span>(MODEL_PATH, <span class="str">'rb'</span>))   <span class="comment"># ← model.pkl deserialized here</span>
+    scaler = pickle.load(<span class="kw">open</span>(SCALER_PATH, <span class="str">'rb'</span>))  <span class="comment"># ← scaler.pkl deserialized here</span>
+    class_names = model.classes_
+</div>
+
+<div class="code-block mb-3">
+<span class="comment"># Prediction step in app.py — get_career_recommendations()</span>
+feature_array = np.array([[gender, part_time, absence, extra, self_study,
+                          math, hist, phys, chem, bio, eng, geo, total, avg]])
+scaled_features = scaler.transform(feature_array)          <span class="comment"># ⬅ scaler.pkl used here</span>
+probabilities = model.predict_proba(scaled_features)      <span class="comment"># ⬅ model.pkl  used here</span>
+top_3 = sorted(zip(class_names, probabilities[0]), reverse=True)[:3]
+</div>
+
+<h4 class="section-title">🔁 Training Workflow — How The .pkl Files Were Born</h4>
+<div class="code-block mb-4">
+<span class="comment"># train_model.py — end-to-end</span>
+1. <span class="kw">Read</span> student-scores.csv (2000 rows × 12 cols)
+2. <span class="kw">Engineer</span> total_score & average_score (14 features ready)
+3. <span class="kw">Encode</span> gender → F=1 / M=0 ;  part_time & extracurricular → 0/1
+4. <span class="kw">Scale</span>  X = StandardScaler().fit_transform(X)   →  <b>save scaler → scaler.pkl</b>
+5. <span class="kw">Split</span>  80% Train / 20% Test  (1600 / 400, seed 42)
+6. <span class="kw">Train</span>  RandomForestClassifier(n_estimators=100, random_state=42)
+7. <span class="kw">Eval</span>   Accuracy = 47.00% on 17-class multi-class task
+8. <span class="kw">Save</span>   model  →  <b>Models/model.pkl</b>  (21.9 MB)
+</div>
+
+<div class="card border-0 bg-light p-4">
+    <h5 class="mb-2">🎙️ Interview Talking Points (for Sir)</h5>
+    <ul class="mb-0 small">
+        <li>My project uses <b>two binary model files</b> stored in the <code>Models/</code> folder: <b>model.pkl</b> (the trained ML classifier) and <b>scaler.pkl</b> (standardization parameters).</li>
+        <li>Both files are produced by <code>train_model.py</code> and then loaded once at Flask startup in <code>app.py</code> lines 22–29.</li>
+        <li>Because .pkl files are serialized Python objects, they aren't human-readable text — which is why I built this Model Report page to document them visually.</li>
+        <li>The classifier is a <b>Random Forest of 100 trees</b> trained on 2,000 labelled students; it predicts across <b>17 career categories</b> using 14 input features.</li>
+        <li>Live demo: go to <span class="kbd">/career</span>, enter marks, submit — both files are invoked in real time to produce ranked careers and a probability pie chart.</li>
+    </ul>
+</div>
+
+{% endblock %}

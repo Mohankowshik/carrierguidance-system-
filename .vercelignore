@@ -1,0 +1,11 @@
+node_modules
+__pycache__
+.vercel
+.git
+*.log
+Untitled32.ipynb
+untitled37.py
+app_log.txt
+check_import.txt
+flask_log.txt
+training_log.txt

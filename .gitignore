@@ -1,0 +1,7 @@
+.vercel
+node_modules/
+__pycache__/
+*.pyc
+*.log
+Untitled32.ipynb
+untitled37.py

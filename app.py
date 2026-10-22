@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory
 import pickle
 import numpy as np
 import io
@@ -321,11 +321,17 @@ def combined():
     return render_template('combined.html', questions=holland_questions, technical_interests=technical_interests_mapping.keys())
 
 
-if __name__ == '__main__':
-    # For local development
-    app.run(debug=True)
+@app.route('/model-report')
+def model_report():
+    return render_template('model_report.html')
 
-# For Vercel, the app or application object is imported directly.
-# Ensure 'app' is the Flask instance.
-app = application = app
+
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('static', filename)
+
+
+# For local development
+if __name__ == '__main__':
+    app.run(debug=True)
 
